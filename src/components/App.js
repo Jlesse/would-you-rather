@@ -7,6 +7,7 @@ import NewQuestion from './NewQuestion'
 import LeaderBoard from './LeaderBoard'
 import Login from './Login'
 import { handleInitialData } from '../actions/shared'
+import { Grid } from 'react-bootstrap'
 
 class App extends Component {
   componentDidMount () {
@@ -19,11 +20,13 @@ class App extends Component {
       <Router>
         <Fragment>
           <div className='container'>
-            <Route path='/login' component={Login}/>
-            <Route path='/' exact component={Dashboard}/>
-            <Route path='/questions/:questions_id' component={QuestionPage}/>
-            <Route path='/add' component={NewQuestion}/>
-            <Route path='/leaderboard' component={LeaderBoard}/>
+            <Grid>
+              <Route path='/login' component={Login}/>
+              <Route path='/' exact component={Dashboard}/>
+              <Route path='/questions/:questions_id' component={QuestionPage}/>
+              <Route path='/add' component={NewQuestion}/>
+              <Route path='/leaderboard' component={LeaderBoard}/>
+            </Grid>
           </div>
         </Fragment>
       </Router>
