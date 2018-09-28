@@ -7,4 +7,4 @@ This is a simple react-redux implementaion of the "Would You Rather" game. The a
 3. Localhost:3000 should automatically open to the login page in your default browser.
 
 ## About The App
-This is a react-redux implementation of the "Would You Rather" game. A user my login as 1 of 3 users, and answer/create questions which inculde 2 options. The app keeps track of the users answers and questions in the redux store. The user may view a leader board showing who has asked and answered the most questions. Thats pretty much it! :)
+This is a react-redux implementation of the "Would You Rather" game. A user may login as 1 of 3 users, and answer/create questions which inculde 2 options. The app keeps track of the user's answers and questions in the redux store. The user may view a leader board showing who has asked and answered the most questions. Thats pretty much it! :)
