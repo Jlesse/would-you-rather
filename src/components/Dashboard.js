@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, ListGroup, ListGroupItem, Button} from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 class Dashboard extends Component {
   state = {
@@ -21,7 +22,9 @@ class Dashboard extends Component {
   }
 
   shownQuestions = () => {
-    return (this.state.viewAnswered ? this.answeredQuestions() : this.unansweredQuestions());
+    return (this.state.viewAnswered ? this.answeredQuestions() : this.unansweredQuestions()).sort((a, b) => {
+     return (b.timestamp - a.timestamp)
+    });
   }
 
   toggleQuestions = () => {
@@ -36,14 +39,18 @@ class Dashboard extends Component {
             <h1 className='text-right'>DASHBOARD</h1>
           </Col>
           <Col xs={4}>
-            <Button onClick={this.toggleQuestions}>Veiw Answered</Button>
+            <Button onClick={this.toggleQuestions}>{ this.state.viewAnswered ? "View Unanswered" : "Veiw Answered" }</Button>
           </Col>
         </Row>
         <ListGroup>
           { 
             this.shownQuestions().map((question)=>{
               const {optionOne, optionTwo} = question
-              return <ListGroupItem className='text-center' key={question.id} header="Would you rather?">{`${optionOne.text} OR ${optionTwo.text}`}</ListGroupItem>
+              return (
+                      <ListGroupItem className='text-center' key={question.id} header="Would you rather?">
+                        <Link to={`/question/${question.id}`}>{`${optionOne.text} OR ${optionTwo.text}`}</Link>
+                      </ListGroupItem>
+                      )
             })
           }
         </ListGroup>
@@ -53,7 +60,6 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps({questions, users, authedUser}){
-  console.log(authedUser)
   return {
     user: users[authedUser],
     questions: Object.keys(questions).map((id) => {

@@ -1,14 +1,18 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Switch } from 'react-router-dom'
 import Dashboard from './Dashboard'
 import QuestionPage from './QuestionPage'
 import NewQuestion from './NewQuestion'
 import LeaderBoard from './LeaderBoard'
 import Login from './Login'
+import AppNav from './AppNav'
 import { handleInitialData } from '../actions/shared'
 import { Grid } from 'react-bootstrap'
-import {Redirect} from 'react-router'
+import PrivateRoute from './PrivateRoute'
+import ErrorPage from './ErrorPage'
+
 
 class App extends Component {
   componentDidMount () {
@@ -17,29 +21,26 @@ class App extends Component {
   }
 
   render() {
-    if(this.props.authedUser){
-      return (
+    const { authedUser } = this.props
+    return (
+      <Fragment>
         <Router>
-          <Fragment>
-            <div className='container'>
-              <Grid>
-                <Route path='/login' component={Login}/>
-                <Route path='/' exact component={Dashboard}/>
-                <Route path='/questions/:questions_id' component={QuestionPage}/>
-                <Route path='/add' component={NewQuestion}/>
-                <Route path='/leaderboard' component={LeaderBoard}/>
-              </Grid>
-            </div>
-          </Fragment>
+          <div className='container'>
+            <Grid>
+              <Switch>
+                <Route path='/404' exact component={ErrorPage}/>
+                <Route path='/login' exact component={Login}/>
+                <Route path='/' component={AppNav}/>
+              </Switch>
+              <PrivateRoute authedUser={authedUser} path='/' exact component={Dashboard}/>
+              <PrivateRoute authedUser={authedUser} path='/question/:question_id' component={QuestionPage}/>
+              <PrivateRoute authedUser={authedUser} path='/add' component={NewQuestion}/>
+              <PrivateRoute authedUser={authedUser} path='/leaderboard' component={LeaderBoard}/>
+            </Grid>
+          </div>
         </Router>
-      )
-    } else {
-      return (
-        <Router>
-          <Redirect to='/login'/>
-        </Router>
-      )
-    }
+      </Fragment>
+    )
   }
 }
 const mapDispatchToProps = (dispatch) => {
